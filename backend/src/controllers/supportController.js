@@ -3,6 +3,7 @@ const supportService = require("../services/supportService");
 
 exports.submitSupportRequest = (req, res) => {
   try {
+    supportService.validateRequest(req.body);
     const result = supportService.createRequest(req.body);
     res.status(201).json({ message: "Support request submitted", data: result });
   } catch (err) {

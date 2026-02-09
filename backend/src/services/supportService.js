@@ -14,7 +14,8 @@ class SupportService {
       name: reqData.name,
       email: reqData.email,
       message: reqData.message,
-      createdAt: new Date()
+      createdAt: new Date(),
+      priority: this.determinePriority(reqData.message)
     };
 
     return supportRepo.save(payload);
@@ -22,6 +23,19 @@ class SupportService {
 
   getAllRequests() {
     return supportRepo.findAll();
+  }
+
+  determinePriority(message) {
+    if (message.toLowerCase().includes("urgent") || message.toLowerCase().includes("immediately")) {
+      return "high";
+    }
+    return "normal";
+  }
+
+  validateRequest({name, email, message}) {
+    if (!name || !email || !message) {
+      throw new Error("Missing required fields");
+    }
   }
 }
 
